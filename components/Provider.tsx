@@ -9,7 +9,7 @@ import React from 'react'
 const Provider = ({
     children,
     session
-}: { children: JSX.Element, session: Session | null & { session: { user: Tuser } } }) => {
+}: { children: JSX.Element, session: Session | null }) => {
     return (
         <SessionProvider session={session}>
 
