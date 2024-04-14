@@ -37,7 +37,7 @@ const Nav = () => {
           height={30}
           className='object-contain'
         />
-        <p className='logo_text'>PrompHub</p>
+        <p className='logo_text'>PromptHub</p>
       </Link>
 
       <div className="sm:flex hidden">
