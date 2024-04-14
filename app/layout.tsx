@@ -4,7 +4,7 @@ import Provider from '@/components/Provider'
 import '@/styles/globals.css'
 import React from 'react'
 export const metadata = {
-    title: "Promptobia",
+    title: "PromptHub",
     description: "Discover & Share AI Prompts",
 }
 
