@@ -2,7 +2,7 @@ import { Tpost } from '@/utils/types'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 type PromptCardProps = {
   post: Tpost,
@@ -20,8 +20,20 @@ const PromptCard = ({
   const pathName = usePathname();
   const { data: session } = useSession();
   const router = useRouter();
-
+  const [likes, setLikes] = useState<string[]>([]);
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (post && post.likes) {
+      setLikes(post.likes);
+    }
+  }, [post]);
+
+
+
+  const isLiked = useMemo(() => {
+    return likes.includes(session?.user._id || '')
+  }, [likes, session?.user]);
 
   const handleCopy = () => {
     setCopied(true)
@@ -35,6 +47,34 @@ const PromptCard = ({
 
     router.push(`/profile/${post.creator._id}`);
   };
+
+  const handleLike = async (id: string) => {
+
+    const likesArray = [...likes];
+
+    if (likesArray.includes(session?.user._id || '')) {
+      likesArray.splice(likesArray.indexOf(session?.user._id || ""), 1)
+    } else {
+      likesArray.push(session?.user._id || '')
+    }
+
+    setLikes(likesArray);
+    try {
+      const res = await fetch('/api/prompt/like', {
+        method: 'POST',
+        body: JSON.stringify({
+          promptId: id,
+          likes: likesArray,
+          userId: session?.user?._id
+        })
+      })
+      const data = await res.json();
+      console.log(data);
+
+    } catch (error) {
+
+    }
+  }
 
   return (
     <div className="prompt_card">
@@ -96,7 +136,18 @@ const PromptCard = ({
           )
         })
       }
-
+      <div className="flex mt-3">
+        <div className="flex flex-col items-center gap-1 cursor-pointer">
+          <img
+            src={isLiked ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"}
+            alt="like"
+            width={16}
+            height={16}
+            onClick={() => handleLike(post._id)}
+          />
+          <p className="text-sm">{likes.length}</p>
+        </div>
+      </div>
       {
         session?.user?._id === post.creator._id && pathName === "/profile" && (
           <div className='mt-5 flex-center gap-4 border-t border-gray-100 pt-3'>
