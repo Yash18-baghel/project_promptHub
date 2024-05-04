@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify';
 
 type PromptCardProps = {
   post: Tpost,
@@ -36,6 +37,7 @@ const PromptCard = ({
   }, [likes, session?.user]);
 
   const handleCopy = () => {
+    toast.success('Prompt Copied!!!')
     setCopied(true)
     navigator.clipboard.writeText(post.prompt)
     setTimeout(() => setCopied(false), 3000)
@@ -49,6 +51,10 @@ const PromptCard = ({
   };
 
   const handleLike = async (id: string) => {
+    if (!session) {
+      toast.error('Please Login First!!!')
+      return
+    }
 
     const likesArray = [...likes];
 

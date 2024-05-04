@@ -1,4 +1,6 @@
 import Feed from "@/components/Feed"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
     return (
@@ -16,6 +18,7 @@ const Home = () => {
                 discover, create and share creative prompts
             </p>
             <Feed />
+            <ToastContainer />
         </div>
     )
 }
