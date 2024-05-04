@@ -10,4 +10,5 @@ export type Tpost = {
     creator: Tuser
     prompt: string
     tag: string
+    likes: string[]
 }

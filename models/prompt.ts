@@ -14,6 +14,13 @@ const PromptSchema = new Schema({
         type: String,
         required: [true, "Tag is required!"],
     },
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: [true, "UserId is required!"],
+        }
+    ]
 }, { timestamps: true })
 
 const Prompt = models.Prompt || model('Prompt', PromptSchema)
